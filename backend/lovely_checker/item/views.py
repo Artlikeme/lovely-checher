@@ -3,33 +3,48 @@ from rest_framework.generics import ListCreateAPIView, \
     ListAPIView, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
 
-from item.models import Item, ItemThroughIp, Comment
+from item.models import Item, ItemThroughIp, Comment, Favorite
 from item.serializers import ItemGetSerializer, \
     ItemPostSerializer, TopThreeItemSerializer, SingleItemSerializer, \
-    LastViewsItemSerializer, CommentPostPostSerializer, CommentGetPostSerializer
+    LastViewsItemSerializer, CommentPostPostSerializer, CommentGetPostSerializer,\
+    FavoritePOSTSerializer, FavoriteGETSerializer
 from main.services.get_top_three import get_top_three_items
 from main.services.get_user_city import get_user_city
 from main.services.views_add import add_view
 
 
 class ItemListPagination(PageNumberPagination):
-    page_size = 3
+    page_size = 6
     page_size_query_param = 'page_size'
     max_page_size = 100
 
 
-class ItemListCreateView(ListCreateAPIView):
-    queryset = Item.objects.all()
+class ItemSearchView(ListCreateAPIView):
+    serializer_class = ItemGetSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     pagination_class = ItemListPagination
     filter_backends = [filters.SearchFilter]
-    search_fields = ['title', 'category__name']
+    search_fields = ['title']
+
+    def get_queryset(self):
+        return Item.objects.filter(city__name=get_user_city(self.request))
+
+
+class ItemListCreateView(ListCreateAPIView):
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    pagination_class = ItemListPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['category__name']
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return ItemPostSerializer
         else:
             return ItemGetSerializer
+
+    def get_queryset(self):
+        return Item.objects.filter(city__name=get_user_city(self.request))
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, args, kwargs)
@@ -78,3 +93,14 @@ class CommentsView(ListCreateAPIView):
             return CommentPostPostSerializer
         else:
             return CommentGetPostSerializer
+
+
+class FavoriteView(ListCreateAPIView):
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return FavoritePOSTSerializer
+        else:
+            return FavoriteGETSerializer
+
+    def get_queryset(self):
+        return Favorite.objects.filter(user=self.request.user)

@@ -7,6 +7,7 @@ from item.models import Item
 from item.serializers import ItemGetSerializer
 from main.models import PotentialCity, City
 from main.serializers import PotenCitySerializer
+from main.services.parcer import parse_yandex
 from moderation.serializers import ModerationCitySerializer, \
     ModerationItemSerializer
 from moderation.tasks import send_city_moderation_mail, \
@@ -29,7 +30,12 @@ class ModerationCity(APIView):
         city = get_object_or_404(PotentialCity, pk=pk)
         serializer = ModerationCitySerializer(data=request.data)
         if serializer.is_valid() and serializer.data['to_active']:
-            City.objects.get_or_create(name=city.name)
+            city_for_parse = City.objects.get_or_create(
+                name=city.name,
+                code=serializer.data['code']
+            )
+            parse_yandex(city_for_parse)
+
             city.delete()
         elif serializer.data['to_deactive']:
             send_city_moderation_mail \

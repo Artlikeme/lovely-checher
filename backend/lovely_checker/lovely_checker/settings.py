@@ -4,7 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$=gnlld#wkhp!r*q%a#vr!w51oai+7j@u6oj&b*zx@+1xtt^sy'
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
+    'corsheaders',
     'djoser',
     'main',
     'news',
@@ -27,6 +28,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -62,7 +64,17 @@ DATABASES = {
     }
 }
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'lovelyproject',
+#         'USER': 'mysugar',
+#         'PASSWORD': 'lovelyproject',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+#
+# }
 # LOGGING = {
 #     'version': 1,
 #     'handlers': {
@@ -125,6 +137,19 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "naturalenv22@gmail.com"
 EMAIL_HOST_PASSWORD = "hoovkmttrsxpweqb"
 # DEFAULT_FROM_EMAIL = 'naturalenv22@gmail.com'
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost",
+]
+CORS_REPLACE_HTTPS_REFERER = True
+
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:5173",
+    "http://127.0.0.1",
+    "http://localhost",
+]
 
 TIME_ZONE = 'UTC'
 

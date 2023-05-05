@@ -7,13 +7,20 @@ from .services.get_user_city import get_user_city
 
 
 class CityListView(ListAPIView):
-    queryset = City.objects.all()
     serializer_class = CitySerializer
     permission_classes = (permissions.AllowAny,)
 
+    def get_queryset(self):
+        return City.objects.all().exclude(name=get_user_city(self.request))
+
+    # def get_serializer_context(self):
+    #     city = get_user_city(self.request)
+    #     return city
+
     def list(self, request, *args, **kwargs):
         response = super().list(request, args, kwargs)
-        response.data.append({'your_city': get_user_city(request)})
+        city = City.objects.get(name=get_user_city(request))
+        response.data.insert(0, {'your_city': {"id": city.id, "name": city.name}})
 
         return response
 

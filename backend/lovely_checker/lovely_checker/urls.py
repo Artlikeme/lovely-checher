@@ -10,7 +10,7 @@ from moderation.views import ModerationCity, ModerationItem,\
     BecomeOwnerModeration
 from news.views import TopThreeNews, SingleNewView
 from item.views import TopThreeItems, ItemListCreateView, \
-    SingleItemView, LastThreeItems, CommentsView
+    SingleItemView, LastThreeItems, CommentsView, ItemSearchView, FavoriteView
 from useraccount.views import AddNewQuestionnaire, UserProfileView
 
 # router = routers.DefaultRouter()
@@ -31,6 +31,9 @@ urlpatterns = [
     path('api/v1/item/<int:pk>', SingleItemView.as_view()),
     path('api/v1/item/lastthree', LastThreeItems.as_view()),
     path('api/v1/item/comments', CommentsView.as_view()),
+    path('api/v1/item/search', ItemSearchView.as_view()),
+
+    path('api/v1/favorites', FavoriteView.as_view()),
 
     path('api/v1/user/addque', AddNewQuestionnaire.as_view()),
     path('api/v1/user/<int:pk>', UserProfileView.as_view()),
@@ -47,7 +50,7 @@ urlpatterns = [
 
     # path('api/v1/', include(router.urls)),
     path('api/v1/auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.authtoken')),
+    path('api/v1/auth/', include('djoser.urls.authtoken')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

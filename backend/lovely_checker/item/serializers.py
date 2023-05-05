@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Item, CategoryItem, ItemThroughIp, Comment
+from .models import Item, CategoryItem, ItemThroughIp, Comment, Favorite
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -21,7 +21,7 @@ class CommentGetPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('name',)
+        fields = ('name', 'description', 'rating')
 
 
 class ItemGetSerializer(serializers.ModelSerializer):
@@ -49,7 +49,7 @@ class TopThreeItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ('image', 'city', 'title', 'category', 'rating')
+        fields = ('id', 'image', 'city', 'title', 'category', 'rating')
 
 
 class SingleItemSerializer(serializers.ModelSerializer):
@@ -71,4 +71,17 @@ class LastViewsItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ItemThroughIp
-        fields = ('item', 'category', 'title', 'image', 'rating')
+        fields = ('id', 'item', 'category', 'title', 'image', 'rating')
+
+
+class FavoriteGETSerializer(serializers.ModelSerializer):
+    item = ItemGetSerializer()
+    class Meta:
+        model = Favorite
+        fields = '__all__'
+
+
+class FavoritePOSTSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = '__all__'

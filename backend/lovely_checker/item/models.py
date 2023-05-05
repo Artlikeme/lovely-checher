@@ -38,7 +38,7 @@ class Item(models.Model):
     )
     # mapcode = models.CharField('mapcode', max_length=30)
     address_link = models.URLField('address_url')
-    image = models.ImageField('image', upload_to="items/%Y/%m/%d/")
+    image = models.ImageField('image', upload_to="items/%Y/%m/%d/", blank=True)
     active = models.BooleanField('active', default=False)
     views = models.ManyToManyField(
         Ip,
@@ -97,7 +97,7 @@ class Comment(models.Model):
         blank=True,
         null=True
     )
-    name = models.CharField(max_length=80)
+    name = models.CharField(max_length=80, blank=True)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="comments/%Y/%m/%d/", blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -118,3 +118,11 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ('rating',)
+
+
+class Favorite(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.item.title}'
