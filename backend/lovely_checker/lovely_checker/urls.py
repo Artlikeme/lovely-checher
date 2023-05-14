@@ -11,7 +11,7 @@ from moderation.views import ModerationCity, ModerationItem,\
 from news.views import TopThreeNews, SingleNewView
 from item.views import TopThreeItems, ItemListCreateView, \
     SingleItemView, LastThreeItems, CommentsView, ItemSearchView, FavoriteView
-from useraccount.views import AddNewQuestionnaire, UserProfileView
+from useraccount.views import AddNewQuestionnaire, UserProfileView, CurrentUserView, LoginView
 
 # router = routers.DefaultRouter()
 # router.register(r'city', MainViewSet, basename='country')
@@ -37,6 +37,7 @@ urlpatterns = [
 
     path('api/v1/user/addque', AddNewQuestionnaire.as_view()),
     path('api/v1/user/<int:pk>', UserProfileView.as_view()),
+    path('api/v1/user/info', CurrentUserView.as_view()),
 
     path('api/v1/moderation/city/<int:pk>',
          ModerationCity.as_view(),
@@ -49,6 +50,7 @@ urlpatterns = [
          name='user_moderation'),
 
     # path('api/v1/', include(router.urls)),
+    path('api/v1/authlogin/', LoginView.as_view()),
     path('api/v1/auth/', include('djoser.urls')),
     path('api/v1/auth/', include('djoser.urls.authtoken')),
 ]

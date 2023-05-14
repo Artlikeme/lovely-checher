@@ -31,6 +31,12 @@ class Item(models.Model):
     rating = models.FloatField(blank=True, default=0)
     title = models.CharField('title', max_length=250, default='Some title')
     description = models.TextField('description', default='Some text...')
+    hours = models.CharField(max_length=30, blank=True)
+    phone = models.CharField(max_length=13, blank=True)
+    date_foundation = models.CharField(max_length=30, blank=True)
+    parking = models.BooleanField(default=False, blank=True)
+    average_check = models.FloatField(blank=True)
+
     address = models.CharField(
         'address',
         max_length=250,
@@ -126,3 +132,6 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f'{self.item.title}'
+
+
+

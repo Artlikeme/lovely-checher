@@ -58,6 +58,7 @@ class SingleItemSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.name')
     views = serializers.IntegerField(source='total_views')
     comments = CommentGetPostSerializer(many=True)
+
     class Meta:
         model = Item
         fields = '__all__'

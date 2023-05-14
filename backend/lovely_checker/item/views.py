@@ -52,7 +52,7 @@ class ItemListCreateView(ListCreateAPIView):
 
 
 class SingleItemView(RetrieveAPIView):
-    queryset = Item.objects.all()
+    queryset = Item.objects.filter(active=True)
     serializer_class = SingleItemSerializer
 
     def get(self, request, *args, **kwargs):
@@ -76,7 +76,8 @@ class LastThreeItems(ListAPIView):
     def get_queryset(self):
         return ItemThroughIp.objects \
                    .select_related('item', 'item__category') \
-                   .filter(ip__ip=get_user_city(self.request, get_ip=True)) \
+                   .filter(ip__ip=get_user_city(self.request, get_ip=True),
+                           item__active=True) \
                    .only('item__title',
                          'item__image',
                          'item__rating',

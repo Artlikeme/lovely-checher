@@ -42,7 +42,7 @@ export default {
 
 #app {
   font-family: 'Inter', sans-serif;
-  background-color:  #ECECEC;;
+  background-color:  #F3F0FF;
  
   
   
