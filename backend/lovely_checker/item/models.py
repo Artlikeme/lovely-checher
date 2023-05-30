@@ -25,17 +25,16 @@ class Item(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
-        null=True,
-        editable=False
+        null=True
     )
     rating = models.FloatField(blank=True, default=0)
     title = models.CharField('title', max_length=250, default='Some title')
     description = models.TextField('description', default='Some text...')
-    hours = models.CharField(max_length=30, blank=True)
-    phone = models.CharField(max_length=13, blank=True)
-    date_foundation = models.CharField(max_length=30, blank=True)
+    hours = models.CharField(max_length=30, blank=True, default=0)
+    phone = models.CharField(max_length=13, blank=True, default=0)
+    date_foundation = models.CharField(max_length=30, blank=True, default=0)
     parking = models.BooleanField(default=False, blank=True)
-    average_check = models.FloatField(blank=True)
+    average_check = models.FloatField(blank=True, default=0)
 
     address = models.CharField(
         'address',
@@ -62,6 +61,10 @@ class Item(models.Model):
     @property
     def comments(self):
         return self.comments.all()
+
+    @property
+    def menu(self):
+        return self.menuitem_set.all()
 
     @property
     def average_rating(self, np=None):
@@ -115,8 +118,7 @@ class Comment(models.Model):
     )
     author = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
-        editable=False
+        on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -133,5 +135,9 @@ class Favorite(models.Model):
     def __str__(self):
         return f'{self.item.title}'
 
+
+class MenuItem(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="comments/%Y/%m/%d/", blank=True)
 
 

@@ -17,7 +17,7 @@ class AddNewQuestionnaire(CreateAPIView):
     serializer_class = AddNewQuestionnaireSerializer
 
 
-class UserProfileView(UpdateAPIView):
+class UserProfileView(RetrieveAPIView):
     queryset = UserProfile
     serializer_class = UserProfileSerializer
 

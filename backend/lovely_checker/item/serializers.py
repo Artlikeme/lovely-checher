@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Item, CategoryItem, ItemThroughIp, Comment, Favorite
+from .models import Item, CategoryItem, ItemThroughIp, Comment, Favorite, MenuItem
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -21,8 +21,14 @@ class CommentGetPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('name', 'description', 'rating')
+        fields = ('name', 'description', 'rating', 'image')
 
+
+class MenuGetPostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MenuItem
+        fields = ('image', )
 
 class ItemGetSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source='author.username')
@@ -58,6 +64,7 @@ class SingleItemSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.name')
     views = serializers.IntegerField(source='total_views')
     comments = CommentGetPostSerializer(many=True)
+    menu = MenuGetPostSerializer(many=True)
 
     class Meta:
         model = Item

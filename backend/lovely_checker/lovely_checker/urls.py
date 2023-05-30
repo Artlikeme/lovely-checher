@@ -8,7 +8,7 @@ from lovely_checker import settings
 from main.views import CityListView
 from moderation.views import ModerationCity, ModerationItem,\
     BecomeOwnerModeration
-from news.views import TopThreeNews, SingleNewView
+from news.views import TopThreeNews, SingleNewView, ListCreateNewsView
 from item.views import TopThreeItems, ItemListCreateView, \
     SingleItemView, LastThreeItems, CommentsView, ItemSearchView, FavoriteView
 from useraccount.views import AddNewQuestionnaire, UserProfileView, CurrentUserView, LoginView
@@ -25,6 +25,7 @@ urlpatterns = [
 
     path('api/v1/news/topthree', TopThreeNews.as_view()),
     path('api/v1/news/<int:pk>', SingleNewView.as_view()),
+    path('api/v1/news/list', ListCreateNewsView.as_view()),
 
     path('api/v1/item/topthree', TopThreeItems.as_view()),
     path('api/v1/item/list', ItemListCreateView.as_view()),

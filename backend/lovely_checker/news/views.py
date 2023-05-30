@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView
 
 from main.services.get_top_three import get_top_three_news
 from main.services.views_add import add_view
@@ -24,3 +24,8 @@ class SingleNewView(RetrieveAPIView):
         add_view(request, self.queryset, **kwargs)
 
         return response
+
+
+class ListCreateNewsView(ListCreateAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer

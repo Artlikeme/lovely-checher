@@ -55,6 +55,7 @@ class SingleItemView(RetrieveAPIView):
     queryset = Item.objects.filter(active=True)
     serializer_class = SingleItemSerializer
 
+
     def get(self, request, *args, **kwargs):
         response = super().get(request, args, kwargs)
         # добавление шз адреса в просмотры

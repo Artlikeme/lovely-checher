@@ -7,12 +7,12 @@ from main.models import City, Ip
 
 
 class News(models.Model):
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.PROTECT)
-    item = models.ForeignKey(Item, on_delete=models.PROTECT)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, blank=True, null=True)
+    author = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
+    item = models.ForeignKey(Item, on_delete=models.PROTECT, blank=True, null=True)
     title = models.CharField(max_length=255)
-    anons = models.CharField(max_length=250)
-    description = models.TextField()
+    anons = models.CharField(max_length=250, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to="news/%Y/%m/%d/")
     date = models.DateTimeField('Дата публикации', default=timezone.now)
     views = models.ManyToManyField(Ip, related_name='News_views', blank=True)
